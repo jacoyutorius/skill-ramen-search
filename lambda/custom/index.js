@@ -135,7 +135,7 @@ var handlers = {
 
 function searchRamenStores(city, callback) {
   superagent.get(api_url)
-    .query({ keyid: "63499951ce2e3eedafd3aa916ac93559", address: city, format: "json", freeword: "ラーメン" })
+    .query({ keyid: "", address: city, format: "json", freeword: "ラーメン" })
     .end(function(err, res) {
       if (err) { console.log(err); }
       var result = JSON.parse(res.text);
