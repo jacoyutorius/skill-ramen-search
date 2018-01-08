@@ -1,62 +1,161 @@
 'use strict';
 var Alexa = require("alexa-sdk");
-
-// For detailed tutorial on how to making a Alexa skill,
-// please visit us at http://alexa.design/build
-
+const superagent = require("superagent");
+var api_url = "https://api.gnavi.co.jp/RestSearchAPI/20150630";
+const city = "浜松市中区";
 
 exports.handler = function(event, context) {
-    var alexa = Alexa.handler(event, context);
-    alexa.dynamoDBTableName = 'RamenSearchSkillTable'; 
-    alexa.registerHandlers(handlers);
-    alexa.execute();
+  var alexa = Alexa.handler(event, context);
+  alexa.dynamoDBTableName = 'RamenSearchSkillTable';
+  alexa.registerHandlers(handlers);
+  alexa.execute();
 };
-
 
 var handlers = {
-    'LaunchRequest': function () {
-        this.emit('SayHello');
-    },
-    'HelloWorldIntent': function () {
-        this.emit('SayHello');
-    },
-    'MyNameIsIntent': function () {
-        this.emit('SayHelloName');
-    },
-    'SayHello': function () {
-        this.response.speak('Hello World!')
-                     .cardRenderer('hello world', 'hello world');
-        this.emit(':responseReady');
-    },
-    'SayHelloName': function () {
-        var name = this.event.request.intent.slots.name.value;
-        this.response.speak('Hello ' + name)
-            .cardRenderer('hello world', 'hello ' + name);
-        this.emit(':responseReady');
-    },
-    'SessionEndedRequest' : function() {
-        console.log('Session ended with reason: ' + this.event.request.reason);
-    },
-    'AMAZON.StopIntent' : function() {
-        this.response.speak('Bye');
-        this.emit(':responseReady');
-    },
-    'AMAZON.HelpIntent' : function() {
-        this.response.speak("このように使います。'アレクサ、'ラーメン検索' または 'アレクサ、ラーメン検索で浜松市のラーメン屋を探して'");
-        this.emit(':responseReady');
-    },
-    'AMAZON.CancelIntent' : function() {
-        this.response.speak('Bye');
-        this.emit(':responseReady');
-    },
-    'Unhandled' : function() {
-        this.response.speak("Sorry, I didn't get that. You can try: 'alexa, hello world'" +
-            " or 'alexa, ask hello world my name is awesome Aaron'");
-    },
-    'AskCityIntent' : function(){
-        var city = this.event.request.intent.slots.city.value;
-        this.attributes["city"] = city;
-        this.response.speak("ヘイ！" + city + "のラーメン屋を検索しました。");
-        this.emit(':responseReady');
+  'LaunchRequest': function() {
+    // this.emit('SayHello');
+    this.response.speak("はい、ラーメン屋を検索しますね");
+  },
+  'HelloWorldIntent': function() {
+    this.emit('SayHello');
+  },
+  'MyNameIsIntent': function() {
+    this.emit('SayHelloName');
+  },
+  'SayHello': function() {
+    this.response.speak('Hello World!')
+      .cardRenderer('hello world', 'hello world');
+    this.emit(':responseReady');
+  },
+  'SayHelloName': function() {
+    var name = this.event.request.intent.slots.name.value;
+    this.response.speak('Hello ' + name)
+      .cardRenderer('hello world', 'hello ' + name);
+    this.emit(':responseReady');
+  },
+  'SessionEndedRequest': function() {
+    console.log('Session ended with reason: ' + this.event.request.reason);
+  },
+  'AMAZON.StopIntent': function() {
+    this.response.speak('Bye');
+    this.emit(':responseReady');
+  },
+  'AMAZON.HelpIntent': function() {
+    this.response.speak("このように使います。'アレクサ、'ラーメン検索' または 'アレクサ、ラーメン検索で浜松市のラーメン屋を探して'");
+    this.emit(':responseReady');
+  },
+  'AMAZON.CancelIntent': function() {
+    this.response.speak('Bye');
+    this.emit(':responseReady');
+  },
+  'Unhandled': function() {
+    this.response.speak("Sorry, I didn't get that. You can try: 'alexa, hello world'" +
+      " or 'alexa, ask hello world my name is awesome Aaron'");
+  },
+  'HelloWorldIntent': function() {
+    this.response.speak("このように使います。'アレクサ、'ラーメン検索' または 'アレクサ、ラーメン検索で浜松市のラーメン屋を探して'");
+    this.emit(':responseReady');
+  },
+  'SelectRamenStoreIntent': function() {
+    if (this.attributes["city"]) {
+      var msg = "";
+
+      var store_names = [];
+      if (this.event.request.intent.slots.re_select.value) {
+        for (var i = 0; i < 5; i++) {
+          var index = getRandomIndex();
+          store_names.push(this.attributes["ramen_stores"][index].name_kana);
+        }
+        this.attributes["ramen_store_names"] = store_names;
+
+        msg = "では、こちらはどうでしょう？";
+        msg += store_names.map(function(store_name, i) {
+          return (i + 1) + ". " + store_name;
+        }).join("、");
+
+        this.emit(":ask", msg);
+      }
+      else {
+        var index = this.event.request.intent.slots.index.value
+        var store_name = this.attributes["ramen_store_names"][index - 1];
+        msg += store_name + "ですね。";
+
+        var store = this.attributes["ramen_stores"].find(function(store) {
+          if (store.name_kana === store_name) {
+            return true;
+          }
+        }.bind(this));
+        msg += "住所は" + store.address + "です。";
+
+        this.attributes["city"] = undefined;
+        this.attributes["ramen_stores"] = undefined;
+        this.attributes["ramen_store_names"] = undefined;
+
+        this.emit(":tell", msg);
+      }
     }
+    else {
+      this.emit('AMAZON.HelpIntent');
+    }
+  },
+  'AskCityIntent': function() {
+    var city = this.event.request.intent.slots.city.value;
+    this.attributes["city"] = city;
+
+    searchRamenStores(city, function(result) {
+      var msg = city + "のラーメン屋を検索しました。";
+
+      // this.attributes["city"] = undefined;
+      // this.attributes["ramen_stores"] = undefined;
+      // this.attributes["ramen_store_names"] = undefined;
+
+      if (result.error) {
+        msg = city + "にラーメン屋が見つかりませんでした。他の場所を探してください。";
+      }
+      else {
+        if (result.rest.length > 0) {
+          var stores = result.rest.map(function(row) {
+            return {
+              name: row.name,
+              name_kana: row.name_kana,
+              address: row.address
+            };
+          });
+          this.attributes["ramen_stores"] = stores;
+
+          var store_names = [];
+          msg += 　result.rest.length + "件の検索結果のうち、5件抽出します。";
+          msg += "";
+          for (var i = 0; i < 5; i++) {
+            var index = getRandomIndex();
+            store_names.push(stores[index].name_kana);
+          }
+          this.attributes["ramen_store_names"] = store_names;
+
+          msg += "番号を選択するか、「再検索」と言ってください。"
+          msg += store_names.map(function(store_name, i) {
+            return (i + 1) + ". " + store_name;
+          }).join("、");
+        }
+      }
+
+      console.log(msg);
+      this.emit(':ask', msg);
+    }.bind(this));
+  }
 };
+
+function searchRamenStores(city, callback) {
+  superagent.get(api_url)
+    .query({ keyid: "63499951ce2e3eedafd3aa916ac93559", address: city, format: "json", freeword: "ラーメン" })
+    .end(function(err, res) {
+      if (err) { console.log(err); }
+      var result = JSON.parse(res.text);
+      callback(result);
+    }.bind(this));
+}
+
+
+function getRandomIndex() {
+  return Math.floor(Math.random(10) * 10);
+}
