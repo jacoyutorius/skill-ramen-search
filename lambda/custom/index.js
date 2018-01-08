@@ -59,17 +59,11 @@ var handlers = {
   'SelectRamenStoreIntent': function() {
     if (this.attributes["city"]) {
       var msg = "";
-
-      var store_names = [];
       if (this.event.request.intent.slots.re_select.value) {
-        for (var i = 0; i < 5; i++) {
-          var index = getRandomIndex();
-          store_names.push(this.attributes["ramen_stores"][index].name_kana);
-        }
-        this.attributes["ramen_store_names"] = store_names;
+        this.attributes["ramen_store_names"] = selectRandomRamenStores(this.attributes["ramen_stores"]);
 
         msg = "では、こちらはどうでしょう？";
-        msg += store_names.map(function(store_name, i) {
+        msg += this.attributes["ramen_store_names"].map(function(store_name, i) {
           return (i + 1) + ". " + store_name;
         }).join("、");
 
@@ -123,17 +117,11 @@ var handlers = {
           });
           this.attributes["ramen_stores"] = stores;
 
-          var store_names = [];
           msg += 　result.rest.length + "件の検索結果のうち、5件抽出します。";
-          msg += "";
-          for (var i = 0; i < 5; i++) {
-            var index = getRandomIndex();
-            store_names.push(stores[index].name_kana);
-          }
-          this.attributes["ramen_store_names"] = store_names;
+          this.attributes["ramen_store_names"] = selectRandomRamenStores(stores);
 
           msg += "番号を選択するか、「再検索」と言ってください。"
-          msg += store_names.map(function(store_name, i) {
+          msg += this.attributes["ramen_store_names"].map(function(store_name, i) {
             return (i + 1) + ". " + store_name;
           }).join("、");
         }
@@ -155,6 +143,18 @@ function searchRamenStores(city, callback) {
     }.bind(this));
 }
 
+function selectRandomRamenStores(ramen_stores) {
+  if (ramen_stores.length <= 0) {
+    return [];
+  }
+
+  var random_array = [];
+  for (var i = 0; i < 5; i++) {
+    var index = getRandomIndex();
+    random_array.push(ramen_stores[index].name_kana);
+  }
+  return random_array;
+}
 
 function getRandomIndex() {
   return Math.floor(Math.random(10) * 10);

@@ -18,6 +18,15 @@ function getRandomIndex(){
   return Math.floor(Math.random(10) * 10);
 }
 
+function selectRandomRamenStores(ramen_stores){
+  var random_array = [];
+  for (var i = 0; i < 5; i++) {
+    var index = getRandomIndex();
+    random_array.push(ramen_stores[index].name_kana);
+  }
+  return random_array;
+}
+
 searchRamenStores(city, function(result){
   var msg = city + "のラーメン屋を検索しました。";
   if (result.error){
@@ -34,15 +43,19 @@ searchRamenStores(city, function(result){
       });
 
       var store_names = [];
-      msg +=　result.rest.length + "件の検索結果のうち、5件抽出します。";
-      msg += "";
-      for(var i = 0; i < 5; i ++){
-        var index = getRandomIndex();
-        store_names.push((i + 1) + ". " + stores[index].name_kana);
-      }
-
-      msg += store_names.join(", ");
+      msg += result.rest.length + "件の検索結果のうち、5件抽出します。";
+      // for(var i = 0; i < 5; i ++){
+      //   var index = getRandomIndex();
+      //   store_names.push((i + 1) + ". " + stores[index].name_kana);
+      // }
+ 
+      msg += selectRandomRamenStores(result.rest).join(", ");
       msg += "番号を選択するか、「再検索」と言ってください。"
+
+      msg += store_names.map(function(store_name, i) {
+        return (i + 1) + ". " + store_name;
+      }).join("、");
+      
     }
   }
 
