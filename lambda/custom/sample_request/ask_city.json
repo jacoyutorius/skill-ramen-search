@@ -1,0 +1,45 @@
+{
+  "session": {
+      "new": true,
+      "sessionId": "SessionId.7fff292a-e7f7-4986-ac8e-3db559415ba0",
+      "application": {
+          "applicationId": "amzn1.ask.skill.97b8e7be-56f2-4e6b-addc-000f853d787b"
+      },
+      "attributes": {},
+      "user": {
+          "userId": "amzn1.ask.account.AE645ZA66CCOB44GSPVDNWFPNBF3IYMPMT73GP3KW7GHM5NOH42YO7RMVCW6NW2AEFC2JVAKFRCHT37AGITPDINCLYLZW2TGBRNT4OCKYCR52YVOXVCJEOX2C7RDULDDWPZ6S74QIVW3DCE5EE56EAZLUNE6KZV5STGORDFODAJRYKDQDADDA4FXSBILYZTTOOEB5FAG22TQ6AI"
+      }
+  },
+  "request": {
+      "type": "IntentRequest",
+      "requestId": "EdwRequestId.e3d96c81-44fb-4732-a244-58aeda51211a",
+      "intent": {
+          "name": "AskCityIntent",
+          "slots": {
+              "city": {
+                  "name": "city",
+                  "value": "浜松市"
+              }
+          }
+      },
+      "locale": "ja-JP",
+      "timestamp": "2018-01-04T16:28:45Z"
+  },
+  "context": {
+      "AudioPlayer": {
+          "playerActivity": "IDLE"
+      },
+      "System": {
+          "application": {
+              "applicationId": "amzn1.ask.skill.97b8e7be-56f2-4e6b-addc-000f853d787b"
+          },
+          "user": {
+              "userId": "amzn1.ask.account.AE645ZA66CCOB44GSPVDNWFPNBF3IYMPMT73GP3KW7GHM5NOH42YO7RMVCW6NW2AEFC2JVAKFRCHT37AGITPDINCLYLZW2TGBRNT4OCKYCR52YVOXVCJEOX2C7RDULDDWPZ6S74QIVW3DCE5EE56EAZLUNE6KZV5STGORDFODAJRYKDQDADDA4FXSBILYZTTOOEB5FAG22TQ6AI"
+          },
+          "device": {
+              "supportedInterfaces": {}
+          }
+      }
+  },
+  "version": "1.0"
+}

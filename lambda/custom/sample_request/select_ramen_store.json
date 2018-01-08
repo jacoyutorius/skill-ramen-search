@@ -1,0 +1,102 @@
+{
+  "session": {
+    "new": false,
+    "sessionId": "SessionId.39de416b-7773-47ea-9378-3220d5434f31",
+    "application": {
+      "applicationId": "amzn1.ask.skill.97b8e7be-56f2-4e6b-addc-000f853d787b"
+    },
+    "attributes": {
+      "city": "浜松市",
+      "ramen_stores": [
+        {
+          "name": "ラーメン山岡家 浜松南区店",
+          "name_kana": "ラーメンヤマオカヤ ハママツミナミクテン",
+          "address": "〒432-8063 静岡県浜松市南区小沢渡町1983-1"
+        },
+        {
+          "name": "ラーメン山岡家 浜松有玉店",
+          "name_kana": "ラーメンヤマオカヤ ハママツアリタマテン",
+          "address": "〒431-3121 静岡県浜松市東区有玉北町2281-1"
+        },
+        {
+          "name": "ラーメン山岡家 浜松薬師店",
+          "name_kana": "ラーメンヤマオカヤ ハママツヤクシテン",
+          "address": "〒435-0017 静岡県浜松市東区薬師町73-1"
+        },
+        {
+          "name": "民民（みんみん） 浜松有楽街店",
+          "name_kana": "ミンミンハママツ ユウラクガイテン",
+          "address": "〒430-0944 静岡県浜松市中区田町323-14 1F"
+        },
+        {
+          "name": "民民（みんみん） 浜松千歳町店",
+          "name_kana": "ミンミン ハママツチトセチョウテン",
+          "address": "〒430-0934 静岡県浜松市中区千歳町100-1"
+        },
+        {
+          "name": "美濃口園 ",
+          "name_kana": "ミノグチエン",
+          "address": "〒434-0031 静岡県浜松市浜北区小林298-6"
+        },
+        {
+          "name": "錦華楼 （きんかろう） 千歳本店",
+          "name_kana": "キンカロウ チトセホンテン",
+          "address": "〒430-0934 静岡県浜松市中区千歳町135-2 1F"
+        },
+        {
+          "name": "麺屋 なかの ",
+          "name_kana": "メンヤナカノ",
+          "address": "〒433-8127 静岡県浜松市中区和合北3-1-1"
+        },
+        {
+          "name": "五味八珍 浜北インター店",
+          "name_kana": "ゴミハッチン ハマキタインターテン",
+          "address": "〒434-0017 静岡県浜松市浜北区豊保107-19"
+        },
+        {
+          "name": "五味八珍 根上り松店",
+          "name_kana": "ゴミハッチン ネアガリマツテン",
+          "address": "〒432-8023 静岡県浜松市中区鴨江3-67-5"
+        }
+      ]
+    },
+    "user": {
+      "userId": "amzn1.ask.account.AE645ZA66CCOB44GSPVDNWFPNBF3IYMPMT73GP3KW7GHM5NOH42YO7RMVCW6NW2AEFC2JVAKFRCHT37AGITPDINCLYLZW2TGBRNT4OCKYCR52YVOXVCJEOX2C7RDULDDWPZ6S74QIVW3DCE5EE56EAZLUNE6KZV5STGORDFODAJRYKDQDADDA4FXSBILYZTTOOEB5FAG22TQ6AI"
+    }
+  },
+  "request": {
+    "type": "IntentRequest",
+    "requestId": "EdwRequestId.91f263cf-a2f2-4c9f-ad27-299dd2c91b6f",
+    "intent": {
+      "name": "SelectRamenStoreIntent",
+      "slots": {
+        "re_select": {
+          "name": "re_select",
+          "value": "再検索"
+        },
+        "index": {
+          "name": "index"
+        }
+      }
+    },
+    "locale": "ja-JP",
+    "timestamp": "2018-01-08T11:04:25Z"
+  },
+  "context": {
+    "AudioPlayer": {
+      "playerActivity": "IDLE"
+    },
+    "System": {
+      "application": {
+        "applicationId": "amzn1.ask.skill.97b8e7be-56f2-4e6b-addc-000f853d787b"
+      },
+      "user": {
+        "userId": "amzn1.ask.account.AE645ZA66CCOB44GSPVDNWFPNBF3IYMPMT73GP3KW7GHM5NOH42YO7RMVCW6NW2AEFC2JVAKFRCHT37AGITPDINCLYLZW2TGBRNT4OCKYCR52YVOXVCJEOX2C7RDULDDWPZ6S74QIVW3DCE5EE56EAZLUNE6KZV5STGORDFODAJRYKDQDADDA4FXSBILYZTTOOEB5FAG22TQ6AI"
+      },
+      "device": {
+        "supportedInterfaces": {}
+      }
+    }
+  },
+  "version": "1.0"
+}
