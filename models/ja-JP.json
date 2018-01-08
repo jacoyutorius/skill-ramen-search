@@ -1,0 +1,56 @@
+{
+  "interactionModel":{
+      "languageModel":{
+          "invocationName":"ramen search",
+          "types":[],
+          "intents":[
+              {
+                "name": "AMAZON.CancelIntent",
+                "samples": []
+              },
+              {
+                "name": "AMAZON.HelpIntent",
+                "samples": []
+              },
+              {
+                "name": "AMAZON.StopIntent",
+                "samples": []
+              },
+              {
+                  "name":"HelloWorldIntent",
+                  "slots":[
+
+                  ],
+                  "samples":[
+                      "hello",
+                      "say hello",
+                      "say hello world"
+                  ]
+              },
+              {
+                  "name":"MyNameIsIntent",
+                  "slots":[
+                      {
+                          "name":"name",
+                          "type":"AMAZON.FirstName"
+                      }
+                  ],
+                  "samples":[
+                      "my name is {name}",
+                      "i am {name}",
+                      "you can call me {name}"
+                  ]
+              },
+              {
+                "name":"AskCityIntent",
+                "slots": [
+                  {
+                    "name": "city",
+                    "type": "AMAZON.City"
+                  }
+                ]
+              }
+          ]
+      }
+  }
+}

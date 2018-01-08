@@ -7,9 +7,11 @@ var Alexa = require("alexa-sdk");
 
 exports.handler = function(event, context) {
     var alexa = Alexa.handler(event, context);
+    alexa.dynamoDBTableName = 'RamenSearchSkillTable'; 
     alexa.registerHandlers(handlers);
     alexa.execute();
 };
+
 
 var handlers = {
     'LaunchRequest': function () {
@@ -40,8 +42,7 @@ var handlers = {
         this.emit(':responseReady');
     },
     'AMAZON.HelpIntent' : function() {
-        this.response.speak("You can try: 'alexa, hello world' or 'alexa, ask hello world my" +
-            " name is awesome Aaron'");
+        this.response.speak("このように使います。'アレクサ、'ラーメン検索' または 'アレクサ、ラーメン検索で浜松市のラーメン屋を探して'");
         this.emit(':responseReady');
     },
     'AMAZON.CancelIntent' : function() {
@@ -51,5 +52,11 @@ var handlers = {
     'Unhandled' : function() {
         this.response.speak("Sorry, I didn't get that. You can try: 'alexa, hello world'" +
             " or 'alexa, ask hello world my name is awesome Aaron'");
+    },
+    'AskCityIntent' : function(){
+        var city = this.event.request.intent.slots.city.value;
+        this.attributes["city"] = city;
+        this.response.speak("ヘイ！" + city + "のラーメン屋を検索しました。");
+        this.emit(':responseReady');
     }
 };

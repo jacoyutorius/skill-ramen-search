@@ -2,15 +2,15 @@
   "skillManifest": {
     "publishingInformation": {
       "locales": {
-        "en-US": {
-          "summary": "Sample Short Description",
+        "ja-JP": {
+          "summary": "ラーメン検索",
           "examplePhrases": [
-            "Alexa open hello world",
-            "Alexa tell hello world I am Jeff",
-            "Alexa tell hello world my name is Peter"
+            "アレクサ、ラーメン検索を開いて",
+            "アレクサ、ラーメン検索で浜松市を探して",
+            "アレクサ、浜松市のラーメン屋を探して"
           ],
-          "name": "skill-ramen-search",
-          "description": "Sample Full Description"
+          "name": "ラーメン検索",
+          "description": "指定した地域のラーメン屋を探すスキルです。"
         }
       },
       "isAvailableWorldwide": true,
