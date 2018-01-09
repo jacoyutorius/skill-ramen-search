@@ -2,6 +2,7 @@
 var Alexa = require("alexa-sdk");
 const superagent = require("superagent");
 var api_url = "https://api.gnavi.co.jp/RestSearchAPI/20150630";
+const api_key = "";
 const city = "浜松市中区";
 
 exports.handler = function(event, context) {
@@ -13,26 +14,25 @@ exports.handler = function(event, context) {
 
 var handlers = {
   'LaunchRequest': function() {
-    // this.emit('SayHello');
-    this.response.speak("はい、ラーメン屋を検索しますね");
+    this.emit('AMAZON.HelpIntent');
   },
   'HelloWorldIntent': function() {
     this.emit('AMAZON.HelpIntent');
   },
-  'MyNameIsIntent': function() {
-    this.emit('SayHelloName');
-  },
-  'SayHello': function() {
-    this.response.speak('Hello World!')
-      .cardRenderer('hello world', 'hello world');
-    this.emit(':responseReady');
-  },
-  'SayHelloName': function() {
-    var name = this.event.request.intent.slots.name.value;
-    this.response.speak('Hello ' + name)
-      .cardRenderer('hello world', 'hello ' + name);
-    this.emit(':responseReady');
-  },
+  // 'MyNameIsIntent': function() {
+  //   this.emit('SayHelloName');
+  // },
+  // 'SayHello': function() {
+  //   this.response.speak('Hello World!')
+  //     .cardRenderer('hello world', 'hello world');
+  //   this.emit(':responseReady');
+  // },
+  // 'SayHelloName': function() {
+  //   var name = this.event.request.intent.slots.name.value;
+  //   this.response.speak('Hello ' + name)
+  //     .cardRenderer('hello world', 'hello ' + name);
+  //   this.emit(':responseReady');
+  // },
   'SessionEndedRequest': function() {
     console.log('Session ended with reason: ' + this.event.request.reason);
   },
@@ -131,7 +131,15 @@ var handlers = {
 
 function searchRamenStores(city, callback) {
   superagent.get(api_url)
-    .query({ keyid: "", address: city, format: "json", freeword: "ラーメン" })
+    .query({
+      keyid: api_key,
+      address: city,
+      format: "json",
+      area: "AREA130", //とりあえず「中部」でハードコード
+      hit_per_page: "100",
+      category_l: "RSFST08000", //大業態コード
+      category_s: "RSFST08008" //小業態コード
+    })
     .end(function(err, res) {
       if (err) { console.log(err); }
       var result = JSON.parse(res.text);
@@ -146,12 +154,12 @@ function selectRandomRamenStores(ramen_stores) {
 
   var random_array = [];
   for (var i = 0; i < 5; i++) {
-    var index = getRandomIndex();
+    var index = getRandomIndex(ramen_stores.length);
     random_array.push(ramen_stores[index].name_kana);
   }
   return random_array;
 }
 
-function getRandomIndex() {
-  return Math.floor(Math.random(10) * 10);
+function getRandomIndex(max) {
+  return Math.floor(Math.random(max) * max);
 }
