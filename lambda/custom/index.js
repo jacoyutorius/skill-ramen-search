@@ -17,7 +17,7 @@ var handlers = {
     this.response.speak("はい、ラーメン屋を検索しますね");
   },
   'HelloWorldIntent': function() {
-    this.emit('SayHello');
+    this.emit('AMAZON.HelpIntent');
   },
   'MyNameIsIntent': function() {
     this.emit('SayHelloName');
@@ -41,7 +41,7 @@ var handlers = {
     this.emit(':responseReady');
   },
   'AMAZON.HelpIntent': function() {
-    this.response.speak("このように使います。'アレクサ、'ラーメン検索' または 'アレクサ、ラーメン検索で浜松市のラーメン屋を探して'");
+    this.response.speak("このように話してください。'アレクサ、ラーメン検索で浜松市のラーメン屋を探して'");
     this.emit(':responseReady');
   },
   'AMAZON.CancelIntent': function() {
@@ -51,10 +51,6 @@ var handlers = {
   'Unhandled': function() {
     this.response.speak("Sorry, I didn't get that. You can try: 'alexa, hello world'" +
       " or 'alexa, ask hello world my name is awesome Aaron'");
-  },
-  'HelloWorldIntent': function() {
-    this.response.speak("このように使います。'アレクサ、'ラーメン検索' または 'アレクサ、ラーメン検索で浜松市のラーメン屋を探して'");
-    this.emit(':responseReady');
   },
   'SelectRamenStoreIntent': function() {
     if (this.attributes["city"]) {
